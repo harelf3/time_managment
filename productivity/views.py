@@ -1,6 +1,3 @@
-from multiprocessing import connection
-from tempfile import template
-from unicodedata import name
 from django.shortcuts import render
 from django.http import HttpResponse
 from math import floor
