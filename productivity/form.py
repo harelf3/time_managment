@@ -11,9 +11,15 @@ entry_type =(
     ("article", "article"),
     ("book", "book"),
     ("course", "course"),
-    ("random", "random"),
+    ("other", "other"),
     )
   
+event_type=(
+    ("meetups", "meetup"),
+    ("hakatons", "hakaton"),
+    ("conferences", "conference"),
+    ("others", "other"),
+)
     
 class DataForm(forms.Form):
     subjects = forms.ChoiceField(choices = subjects)
@@ -28,3 +34,9 @@ class ConnectionForm(forms.Form):
     title = forms.CharField(label='title', max_length=20)
     desc = forms.CharField(label='desc', max_length=140)
     field = forms.CharField(label='field', max_length=20)
+
+class EventsForm(forms.Form): 
+    event_type = forms.ChoiceField(choices = event_type)
+    website_name = forms.CharField(label='website name',max_length=50)
+    website_url = forms.URLField(label='url')
+    importance =forms.IntegerField(label='value',widget=forms.TextInput(attrs={'placeholder': 'importance'}), max_value=10)

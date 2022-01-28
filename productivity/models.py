@@ -13,3 +13,12 @@ class Connections(models.Model):
     title = models.CharField(max_length=30)
     desc = models.CharField(max_length=30)
     field = models.CharField(max_length=30)
+
+
+class NetworkEvents(models.Model):
+    event_type = models.CharField(max_length=10)
+    website_name = models.CharField(max_length=30)
+    website_url = models.CharField(max_length=100)
+    importance = models.IntegerField(max_length=2,default=2)
+    
+    

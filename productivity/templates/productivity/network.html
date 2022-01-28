@@ -18,7 +18,23 @@
             let level = document.getElementById("bar").innerHTML
             document.getElementById("bar").innerHTML = level%10
             document.getElementById("progress_bar").style.width = document.getElementById("bar").innerHTML*10+"%"
-            console.log(level)
+            let switch_btn = document.getElementById("switch_btn");
+            switch_btn.addEventListener("click", function() {
+                let connection_form = document.getElementById("add_connection_form")
+                let events_form = document.getElementById("add_events_form")
+                if (connection_form.style.display == "none"){
+                    switch_btn.innerHTML = "switch to adding events"
+                    connection_form.style.display = "block"
+                    events_form.style.display = "none"
+                }
+                else{
+                    switch_btn.innerHTML = "switch to adding connections"
+                    connection_form.style.display = "none"
+                    events_form.style.display = "block"
+                }
+
+            })
+
         });
         
     </script>
@@ -32,11 +48,13 @@
         <div class="row">
           <div class="col">
             <h1>Events</h1>
-            <a class="btn btn-dark btn-lg" href="network/Meetups">Meetups</a>
-            <br><br>
-            <a class="btn btn-dark btn-lg" href="network/Hakatons">Hakatons</a>
-            <br><br>
-            <a class="btn btn-dark btn-lg" href="network/Conferences">Conferences</a>
+            <a class="btn btn-dark btn-lg" style="margin-top: 10px;" href="network/meetups">Meetups</a>
+            <br>
+            <a class="btn btn-dark btn-lg" style="margin-top: 10px;" href="network/hakatons">Hakatons</a>
+            <br>
+            <a class="btn btn-dark btn-lg" style="margin-top: 10px;" href="network/conferences">Conferences</a>
+            <br>
+            <a class="btn btn-dark btn-lg" style="margin-top: 10px;" href="network/Others">Others</a>
           </div>
           <div class="col">
             <h1>University</h1>
@@ -57,16 +75,24 @@
         <div class="row">
             <div class="col">    
             <div id="addconnection"> 
-            <form action="" method="post" autocomplete="off">
+            <form action="" method="post" autocomplete="off" id="add_connection_form">
                 {% csrf_token %}
-                {{ form }}
+                {{ connection_form }}
                 <br><br>
-                <input class="btn btn-dark btn-lg" type="submit" value="Submit">       
+                <input name="addconnection" class="btn btn-dark btn-lg" type="submit" value="Submit">       
             </form>
-            
+        </div> 
+        <div id="addevent"> 
+            <form action="" method="post" autocomplete="off" style="display:none;" id="add_events_form">
+                {% csrf_token %}
+                {{ event_form }}
+                <br><br>
+                <input name="addevent" class="btn btn-dark btn-lg" type="submit" value="Submit">       
+            </form>
+        </div> 
                 <a style="margin-left: 40%;" class="btn btn-dark btn-lg" href="{% url 'networkdb' %}">NetWork</a>
-                <button  style="margin-left: 20%;"class="btn btn-dark btn-lg">Switch To view name </button>
-            </div>        
+                <button  id="switch_btn" style="margin-left: 20%;"class="btn btn-dark btn-lg">Switch To Adding Events </button>
+                   
             </div>
         </div>
         <div class="row">
