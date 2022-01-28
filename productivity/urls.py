@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
      path("", views.index, name="index"),
-     path("knowledge", views.meetups, name="knowledge"),
-     path("name", views.get_name, name="get_name")
+     path("knowledge", views.knowledge, name="knowledge"),
+     path("network", views.network, name="network"),
+     path("network/network", views.networkdb, name="networkdb"),
 ]
