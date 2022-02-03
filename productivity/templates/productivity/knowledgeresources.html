@@ -20,11 +20,24 @@
         </ul>
     </nav>
     <div class="container">
-        <h1>{{subj}}</h1>
+        <h1>{{subj}} {{type}}</h1>
         {%for entry in entries %}
         <div class="row">
             <div class="col">
-                <a class="btn btn-dark btn-lg" href="{{entry.website_url}}">{{entry.website_name}}</a>
+                <!--<a class="btn btn-dark btn-lg" href="{{entry.url}}">{{entry.desc}}</a>-->
+                {% if entry.status == False%}
+                <br>
+                <form action="" method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <a class="btn btn-dark btn-lg" href="{{entry.url}}">{{entry.desc}} {{entry.id}}</a>
+                    <input name="entry_data" type="hidden" value="{{entry.id}}">
+                    <input class="btn btn-dark btn-lg" type="submit" value="Mark As Read">
+                </form>
+                {% endif %}
+                {% if entry.status == True %}
+                <br>
+                    <a class="btn btn-dark btn-lg" href="{{entry.url}}">{{entry.desc}} {{entry.id}}</a>
+                {% endif %}
             </div>
         </div> 
         {% endfor %}

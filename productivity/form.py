@@ -8,10 +8,10 @@ subjects =(
 )
 
 entry_type =(
-    ("article", "article"),
-    ("book", "book"),
-    ("course", "course"),
-    ("other", "other"),
+    ("articles", "article"),
+    ("books", "book"),
+    ("courses", "course"),
+    ("others", "other"),
     )
   
 event_type=(

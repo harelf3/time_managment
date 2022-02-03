@@ -1,10 +1,11 @@
+from tempfile import template
 from django.shortcuts import render
 from django.http import HttpResponse
 from math import floor
 # Create your views here.
 
 def index(request):
-    template = 'productivity/index2.html'
+    template = 'productivity/index.html'
     return render(request,template)
 
 
@@ -31,13 +32,18 @@ def knowledge(request):
             # ...
             # redirect to a new URL:
             form = DataForm()
-            return render(request, 'productivity/knowledge.html', {'form': form})
+            knowledge = Data.objects.all()
+            lenknowledge = len(knowledge)
+            level = floor(lenknowledge/10)
+            return render(request, 'productivity/knowledge.html', {'form': form,'knowledge':lenknowledge,'level':level})
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = DataForm()
-
-    return render(request, 'productivity/knowledge.html', {'form': form})
+        knowledge = Data.objects.all()
+        lenknowledge = len(knowledge)
+        level = floor(lenknowledge/10)
+    return render(request, 'productivity/knowledge.html', {'form': form,'knowledge':lenknowledge,'level':level})
 
 
 def network(request):
@@ -119,3 +125,23 @@ def networkevents(request,subj):
     all_enteries = NetworkEvents.objects.filter(event_type=subj).order_by('importance')
     # query an object from events and return it to the html in a for loop
     return render(request, template,{'entries':all_enteries,"subj":subj})
+
+def knowledgeresources(request,subj,type):
+    if request.method == 'POST':
+        value=request.POST['entry_data']
+        Data.objects.filter(id=value).update(status=True)
+        template = 'productivity/knowledgeresources.html'
+        all_enteries = Data.objects.filter(Subjects=subj,Entry_type=type).order_by('importance')
+        # query an object from events and return it to the html in a for loop
+        return render(request, template,{'entries':all_enteries,"subj":subj,'type':type})
+    else:
+        template = 'productivity/knowledgeresources.html'
+        all_enteries = Data.objects.filter(Subjects=subj,Entry_type=type).order_by('importance')
+        # query an object from events and return it to the html in a for loop
+        return render(request, template,{'entries':all_enteries,"subj":subj,'type':type})
+
+
+def player(request):
+    template = 'productivity/youtubeplayer.html'
+    return render(request,template)
+
