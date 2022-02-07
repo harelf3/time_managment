@@ -5,6 +5,7 @@ subjects =(
     ("startups", "startups"),
     ("managment", "managment"),
     ("ai", "ai"),
+    ("biohacking", "biohacking")
 )
 
 entry_type =(

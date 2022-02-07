@@ -1,7 +1,10 @@
 from tempfile import template
+from tkinter import Entry
 from django.shortcuts import render
 from django.http import HttpResponse
 from math import floor
+from django.urls import reverse
+
 # Create your views here.
 
 def index(request):
@@ -145,3 +148,79 @@ def player(request):
     template = 'productivity/youtubeplayer.html'
     return render(request,template)
 
+def emailsender(request):
+    import smtplib, ssl
+
+    port = 465  # For SSL
+    smtp_server = "smtp.gmail.com"
+    sender_email = "bikurofepy@gmail.com"  # Enter your address
+    receiver_email = "alonlalon123@gmail.com"  # Enter receiver address
+    password = "e98vv734"
+
+    knowledge_info = """<h1>KnowLedge</h1>\n"""
+    for subj in ["business","startups","managment","ai","biohacking"]:
+        data = Data.objects.filter(Subjects =subj)
+        if data :
+            knowledge_info = knowledge_info + "<h2>"+ str(subj) +"</h2>" + "\n"
+        for entrytype in ["articles","books","courses","others"]:
+            catagory = (data.filter(Subjects =subj, Entry_type= entrytype).order_by('importance').reverse())
+            if catagory :
+                knowledge_info = knowledge_info + "<h3>"+ str(entrytype)+"</h3>" +"\n"
+            for i in catagory:
+                knowledge_info = knowledge_info + "<br>" +str(i.desc) + " "
+                knowledge_info = knowledge_info + str(i.url)
+                knowledge_info = knowledge_info 
+    connections_info = """<h1>Connections</h1>"""
+    for field in ["vcs","software","business","bio","all"]:
+        network = Connections.objects.filter(field = field)
+        if network :
+            connections_info  = connections_info + "<h2>"+ str(field) +"</h2>" 
+        if field == "all":
+            connections_info = connections_info +"<br>"+ "<h2>All Connections</h2>"
+            network = Connections.objects.all()
+        for person in network:
+                connections_info = connections_info +str(person.full_name) + " "
+                connections_info = connections_info + str(person.title) +" "
+                connections_info = connections_info + str(person.contact) + " "
+                connections_info = connections_info + str(person.desc) + " "
+                connections_info = connections_info + str(person.field) + "<br>"
+
+    event_info = """<h1>Events</h1>"""
+    for eventtype in ["meetups","hakatons","conferences","others"]:
+        data = NetworkEvents.objects.filter(event_type =eventtype).order_by('importance').reverse()
+        if data :
+            event_info = event_info  +"<h2>"+ str(eventtype) +"</h2>" 
+        for event in data:
+                event_info = event_info + str(event.website_name) + " "
+                event_info = event_info + str(event.website_url) + "<br>"
+
+
+    events = NetworkEvents.objects.all()
+    print(events)
+
+    from email.message import EmailMessage
+    msg = EmailMessage()
+    msg['Subject'] = 'Here Is Your Summary'
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg.set_content('''
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <h1>Efficency summary</h1>
+            <br></br>
+    
+            '''+ knowledge_info +'''
+            '''+ connections_info +'''
+            '''+ event_info +'''
+            <br><b>Have A WonderFull Day.</b></br>
+        </body>
+    </html>
+    ''', subtype='html')
+
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, password)
+        server.send_message(msg)
+    return HttpResponseRedirect(reverse('index'))
