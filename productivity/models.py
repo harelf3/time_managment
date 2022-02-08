@@ -6,7 +6,7 @@ class Data(models.Model):
     Entry_type = models.CharField(max_length=10)
     url = models.CharField(max_length=100)
     desc = models.CharField(max_length=150)
-    importance = models.IntegerField(max_length=2,default=2)
+    importance = models.IntegerField(default=2)
     status = models.BooleanField(default=False)
 
 class Connections(models.Model):
@@ -21,7 +21,7 @@ class NetworkEvents(models.Model):
     event_type = models.CharField(max_length=10)
     website_name = models.CharField(max_length=30)
     website_url = models.CharField(max_length=100)
-    importance = models.IntegerField(max_length=2,default=2)
+    importance = models.IntegerField(default=2)
 
 
     
