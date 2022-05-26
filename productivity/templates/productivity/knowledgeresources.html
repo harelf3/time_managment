@@ -29,7 +29,7 @@
                 <br>
                 <form action="" method="post" autocomplete="off">
                     {% csrf_token %}
-                    <a class="btn btn-dark btn-lg" href="{{entry.url}}">{{entry.desc}} {{entry.id}}</a>
+                    <a target="_blank" class="btn btn-dark btn-lg" href="{{entry.url}}">{{entry.desc}} {{entry.id}}</a>
                     <input name="entry_data" type="hidden" value="{{entry.id}}">
                     <input class="btn btn-dark btn-lg" type="submit" value="Mark As Read">
                 </form>
